@@ -18,6 +18,7 @@
   "homepage": "https://github.com/ravisankar426/Project#readme",
   "dependencies": {
     "express": "^4.16.3",
+    "mongoose": "^5.2.0",
     "nodemon": "^1.17.5"
   }
 }
