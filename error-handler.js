@@ -1,7 +1,10 @@
-const writeException=require('./data-layer/log-exceptions');
+var Client=require('node-rest-client').Client;
+var {config}=require('./config');
+
+var client=new Client();
 
 function handleException(e,req,res){
-    logException(e,req,res);
+    logException(e);
     sendCustomExceptionResponse(e,res);
 }
 
@@ -10,11 +13,15 @@ function sendCustomExceptionResponse(e,res){
     res.json(response);
 }
 
+function logException(e){
+    var args={
+        data:e,
+        headers:{ "Content-Type": "application/json" }
+    }
 
-function logException(e,req,res){    
-    writeException.writeToDB(e);
+    client.post(`${config.exceptionserver.excpBaseUri}logException`,args,(data,response)=>{        
+    });
 }
-
 
 function getCustomExceptionResponse(message,err,res){
     if(!message)
@@ -30,5 +37,6 @@ function getCustomExceptionResponse(message,err,res){
 
 
 module.exports={
-    handleException
+    handleException,
+    logException
 }

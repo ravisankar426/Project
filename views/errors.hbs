@@ -1,0 +1,40 @@
+<html>
+    <title>errors</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <head></head>
+    <body>
+        <div class="container">
+            <div class="col-md-12">
+                <div class="col-md-11 float-md-left">
+                    <h2>Errors</h2>
+                </div>
+                <div class="col-md-1 float-md-right">
+                    <a href="/" class="btn btn-success" class="btn btn-success">Home</a>
+                </div>
+            </div>             
+            <table class="table table-striped col-md-12">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Error</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{#each errors}}
+                    <tr>
+                        <td>{{_id}}</td>
+                        <td>{{error}}</td>
+                    </tr>
+                {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
