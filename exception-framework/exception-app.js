@@ -1,7 +1,7 @@
 const express=require('express');
 const bodyparser=require('body-parser');
 var config=require('../config').config;
-var logger=require('./exception');
+var logger=require('./exception-repository');
 
 
 

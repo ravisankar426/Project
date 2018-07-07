@@ -27,10 +27,19 @@ var httpArgs = {
   "headers": headers
 }
 
-app.get('/',(req,res)=>{           
+app.get('/',(req,res)=>{         
     res.render('index',{
         WebSiteName:'Project'
     });
+});
+
+app.get('/error',(req,res)=>{ 
+    fs.readFile('/invalid-file',(err,data)=>{
+        if(err){
+            return errhandler(err,req,res);
+        }
+        res.send('This is error page');
+    }); 
 });
 
 app.get('/errors',(req,res)=>{

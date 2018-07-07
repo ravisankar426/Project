@@ -1,5 +1,8 @@
 var appServerPort=3000;
 var excpServerPort=4000;
+var dbHostName='localhost';
+var dbPortNo=27017;
+var appHostName='localhost';
 
 var config={
     appserver:{
@@ -7,10 +10,14 @@ var config={
     },
     exceptionserver:{
         port: excpServerPort,
-        excpBaseUri: `http://localhost:${excpServerPort}/`
+        excpBaseUri: `http://${appHostName}:${excpServerPort}/`
     },
     dbconfig:{
-        errorlogdb:'ErrorLogDB',
+        errorsDB:{
+            hostName:dbHostName,
+            portNo:dbPortNo,
+            dbName:'ErrorLogDB'            
+        },
         projectdb:'ProjectDB'
     }
 }
