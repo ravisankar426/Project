@@ -18,7 +18,11 @@ var config={
             portNo:dbPortNo,
             dbName:'ErrorLogDB'            
         },
-        projectdb:'ProjectDB'
+        projectDB:{
+            hostName:dbHostName,
+            portNo:dbPortNo,
+            dbName:'ProjectDB'
+        }
     }
 }
 

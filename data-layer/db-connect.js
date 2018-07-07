@@ -8,11 +8,15 @@ function connect(dbUrl){
 }
 
 
-function create(model,dbUrl){    
+function create(model,dbUrl){  
     connect(dbUrl);
-    model.save().then((doc)=>{        
-    },
-    (e)=>{
+    return new Promise((resolve,reject)=>{
+        model.save().then((doc)=>{ 
+            resolve(doc);       
+        },
+        (err)=>{
+            reject(err);
+        });
     });
 }
 

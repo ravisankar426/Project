@@ -8,6 +8,10 @@ function handleException(e,req,res){
     sendCustomExceptionResponse(e,res);
 }
 
+function handleException(e){
+    logException(e);
+}
+
 function sendCustomExceptionResponse(e,res){    
     var response=getCustomExceptionResponse('',e,res);    
     res.json(response);
