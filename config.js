@@ -6,7 +6,8 @@ var appHostName='localhost';
 
 var config={
     appserver:{
-        port:appServerPort
+        port:appServerPort,
+        appBaseUri: `http://${appHostName}:${appServerPort}/`
     },
     exceptionserver:{
         port: excpServerPort,

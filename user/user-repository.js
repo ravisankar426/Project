@@ -14,14 +14,33 @@ var user={
 };
 
 function CreateUser(user){
+    var result;
     var user=UserModel.getUserModel(user);
     var dbUrl=getDBUrl();
-    db.create(user,dbUrl).then((doc)=>{
-        console.log(doc);
-    },
-    (err)=>{
-        errhandler.logException(err);
+    return new Promise((resolve,reject)=>{
+        db.create(user,dbUrl).then((doc)=>{
+            resolve(doc);
+        },
+        (err)=>{
+            reject(err);
+        });
+    });   
+}
+
+function GetUsers(fiterParams){
+    var user=UserModel.UserModel;
+    var dbUrl=getDBUrl();
+    return new Promise((resolve,reject)=>{
+        db.get(user,dbUrl,fiterParams).then((doc)=>{
+            resolve(doc);
+        },
+        (err)=>{
+            reject(err);
+        });
     });
 }
 
-CreateUser(user);
+module.exports={
+    CreateUser,
+    GetUsers
+}

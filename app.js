@@ -5,8 +5,8 @@ const config=require('./config').config;
 const hbs=require('hbs');
 const bodyParser=require('body-parser');
 const path=require('path');
-var Client=require('node-rest-client').Client;
-
+const Client=require('node-rest-client').Client;
+const userRepository=require('./user/user-repository');
 
 var app=new express();
 var port=process.env.port || config.appserver.port;
@@ -43,11 +43,35 @@ app.get('/error',(req,res)=>{
 });
 
 app.get('/errors',(req,res)=>{
-    var args={};
     var url=`${config.exceptionserver.excpBaseUri}errors`;
     client.get(url,httpArgs,(data,response)=>{    
          res.render('errors',data);
     });
+});
+
+app.get('/users',(req,res)=>{
+    var filterParams={};
+    userRepository.GetUsers(filterParams).then((doc)=>{
+        var result={users:JSON.parse(doc)};
+        res.render('users',result);
+    },
+    (err)=>{
+        errhandler(err,req,res);
+    });
+});
+
+app.get('/NewUser',(req,res)=>{
+    res.render('NewUser');
+});
+
+app.post('/CreateUser',(req,res)=>{
+    userRepository.CreateUser(req.body).then((doc)=>{
+        res.send(doc);
+    },
+    (err)=>{
+        errhandler(err,req,res);
+        res.send('error');
+    });    
 });
 
 app.listen(port,()=>{

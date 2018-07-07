@@ -1,0 +1,59 @@
+<html>
+    <title>Create User</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>    
+    <head>
+        <script>
+            function createUser(){
+                var user={
+                    UserId:$('#email').val(),
+                    Password:$('#pwd').val()
+                }
+                $.ajax({
+                    url: 'http://localhost:3000/CreateUser',
+                    dataType: 'json',
+                    type: 'post',
+                    contentType: 'application/json',
+                    data: JSON.stringify(user),
+                    processData: false,
+                    success: function( data, textStatus, jQxhr ){
+                        $('#response').html( JSON.stringify( data ) );
+                    },
+                    error: function( jqXhr, textStatus, errorThrown ){
+                        console.log( errorThrown );
+                    }
+                });
+            }
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="col-md-12">
+                <div class="col-md-11 float-md-left">
+                    <h2>Create User</h2>
+                </div>
+                <div class="col-md-1 float-md-right">
+                    <a href="/" class="btn btn-success" class="btn btn-success">Home</a>
+                </div>
+            </div>             
+            <div class="col-md-8">
+                <div class="form-group">
+                    <label for="email">Email address:</label>
+                    <input type="email" class="form-control" id="email">
+                </div>
+                <div class="form-group">
+                    <label for="pwd">Password:</label>
+                    <input type="password" class="form-control" id="pwd">
+                </div>
+                <button type="submit" class="btn btn-success" onclick="javascript:createUser()">Create</button>
+                <div id="response"></div>
+            </div>
+        </div>
+    </body>
+</html>

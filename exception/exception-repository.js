@@ -13,16 +13,15 @@ function writeToDB(err){
     db.create(exception,dbUrl);
 }
 
-function getExceptions(){    
+function getExceptions(filterParams){    
     var exception=exceptionModel.exceptionModel;
     var dbUrl=getDBUrl();
     return new Promise((resolve,reject)=>{
-        db.get(exception,dbUrl).then((doc)=>{
+        db.get(exception,dbUrl,filterParams).then((doc)=>{
             resolve(doc);
         },
         (err)=>{
-            console.log(`Error while fetching errors - ${err}`);
-                reject(err);
+            reject(err);
         });
     });
 }

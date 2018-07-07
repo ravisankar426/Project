@@ -8,10 +8,6 @@ function handleException(e,req,res){
     sendCustomExceptionResponse(e,res);
 }
 
-function handleException(e){
-    logException(e);
-}
-
 function sendCustomExceptionResponse(e,res){    
     var response=getCustomExceptionResponse('',e,res);    
     res.json(response);
@@ -42,5 +38,6 @@ function getCustomExceptionResponse(message,err,res){
 
 module.exports={
     handleException,
-    logException
+    logException,
+    sendCustomExceptionResponse
 }
