@@ -5,7 +5,9 @@ var client=new Client();
 
 function handleException(e,req,res){
     logException(e);
-    sendCustomExceptionResponse(e,res);
+    if(res){
+        sendCustomExceptionResponse(e,res);
+    }
 }
 
 function sendCustomExceptionResponse(e,res){    

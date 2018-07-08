@@ -11,10 +11,12 @@ function connect(dbUrl){
 function create(model,dbUrl){  
     connect(dbUrl);
     return new Promise((resolve,reject)=>{
-        model.save().then((doc)=>{ 
+        model.save()
+        .then((doc)=>{ 
             resolve(doc);       
-        },
-        (err)=>{
+        })
+        .catch((err)=>{
+            console.log(`db connect error - ${err}`);
             reject(err);
         });
     });

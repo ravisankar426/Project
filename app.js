@@ -50,11 +50,12 @@ app.get('/errors',(req,res)=>{
 
 app.get('/users',(req,res)=>{
     var filterParams={};
-    userRepository.GetUsers(filterParams).then((doc)=>{
+    userRepository.GetUsers(filterParams)
+    .then((doc)=>{
         var result={users:JSON.parse(doc)};
         res.render('users',result);
-    },
-    (err)=>{
+    })
+    .catch((err)=>{
         errhandler(err,req,res);
     });
 });
@@ -64,12 +65,12 @@ app.get('/NewUser',(req,res)=>{
 });
 
 app.post('/CreateUser',(req,res)=>{
-    userRepository.CreateUser(req.body).then((doc)=>{
+    userRepository.CreateUser(req.body)
+    .then((doc)=>{
         res.send(doc);
-    },
-    (err)=>{
+    })
+    .catch((err)=>{
         errhandler(err,req,res);
-        res.send('error');
     });    
 });
 

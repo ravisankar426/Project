@@ -17,10 +17,11 @@ function getExceptions(filterParams){
     var exception=exceptionModel.exceptionModel;
     var dbUrl=getDBUrl();
     return new Promise((resolve,reject)=>{
-        db.get(exception,dbUrl,filterParams).then((doc)=>{
+        db.get(exception,dbUrl,filterParams)
+        .then((doc)=>{
             resolve(doc);
-        },
-        (err)=>{
+        })
+        .catch((err)=>{
             reject(err);
         });
     });

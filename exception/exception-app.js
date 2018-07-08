@@ -14,11 +14,12 @@ app.get('/',(req,res)=>{
 });
 
 app.get('/errors',(req,res)=>{
-    logger.getExceptions().then((data)=>{
+    logger.getExceptions()
+    .then((data)=>{
         var result={errors:JSON.parse(data)}
         res.send(result);
-    },
-    (e)=>{
+    })
+    .catch((e)=>{
         console.log(`Error while fetching errors - ${e}`);
         logger.writeToDB(JSON.stringify(req.body));
     });
