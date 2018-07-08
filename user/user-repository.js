@@ -8,11 +8,6 @@ function getDBUrl(){
     return dbUrl;
 }
 
-var user={
-    UserId:'Uppu',
-    Password:'password'
-};
-
 function CreateUser(user){
     var result;
     var user=UserModel.getUserModel(user);

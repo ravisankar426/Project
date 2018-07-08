@@ -1,6 +1,5 @@
 const express=require('express');
 const errhandler=require('./error-handler').handleException;
-const fs=require('fs');
 const config=require('./config').config;
 const hbs=require('hbs');
 const bodyParser=require('body-parser');
@@ -77,3 +76,7 @@ app.post('/CreateUser',(req,res)=>{
 app.listen(port,()=>{
     console.log(`server started at port - ${port}`);
 });
+
+process.on('uncaughtException',(err)=>{
+    errhandler(err);
+})

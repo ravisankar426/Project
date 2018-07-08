@@ -11,7 +11,15 @@ var userSchema=mongoose.Schema({
     Password:{
         type:String,
         minlength:6
-    }
+    },
+    tokens:[{
+        access:{
+            type:String
+        },
+        token:{
+            type:String
+        }
+    }]
 });
 
 var UserModel=mongoose.model('Users',userSchema);

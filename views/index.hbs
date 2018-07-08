@@ -3,28 +3,63 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script>
+            function login(){
+                var user={
+                    UserId:$('#email').val(),
+                    Password:$('#pwd').val()
+                }
+                $.ajax({
+                    url: 'http://localhost:5000/SignIn',
+                    dataType: 'json',
+                    type: 'post',
+                    contentType: 'application/json',
+                    data: JSON.stringify(user),
+                    processData: false,
+                    success: function( data, textStatus, jQxhr ){
+                        $('#response').html( JSON.stringify( data ) );
+                    },
+                    error: function( jqXhr, textStatus, errorThrown ){
+                        console.log(`Status: ${textStatus} ; Error:${errorThrown} `);
+                    }
+                });
+            }
+        </script>
     </head>
     <body>
-        <nav class="navbar navbar-inverse">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                <a class="navbar-brand" href="#">{{WebSiteName}}</a>
-                </div>
-                <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Home</a></li>
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin
-                    <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                    <li><a href="/NewUser">New User</a></li>
-                    <li><a href="/users">Uers</a></li>
-                    <li><a href="/errors">Errors</a></li>
+        <div class="container container-fluid col-md-12">
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                    <a class="navbar-brand" href="#">{{WebSiteName}}</a>
+                    </div>
+                    <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">Home</a></li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin
+                        <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                        <li><a href="/NewUser">New User</a></li>
+                        <li><a href="/users">Uers</a></li>
+                        <li><a href="/errors">Errors</a></li>
+                        </ul>
+                    </li>
                     </ul>
-                </li>
-                <li><a href="#">Page 2</a></li>
-                <li><a href="#">Page 3</a></li>
-                </ul>
+                </div>
+            </nav>
+            <div class="col-md-4"></div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label for="email">Email address:</label>
+                    <input type="email" class="form-control" id="email">
+                </div>
+                <div class="form-group">
+                    <label for="pwd">Password:</label>
+                    <input type="password" class="form-control" id="pwd">
+                </div>
+                <button type="submit" class="btn btn-success" onclick="javascript:login()">Login</button>
+                <div id="response"></div>
             </div>
-        </nav>
+        </div>
     </body>
 </html>
