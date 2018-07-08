@@ -6,6 +6,7 @@ const bodyParser=require('body-parser');
 const path=require('path');
 const Client=require('node-rest-client').Client;
 const userRepository=require('./user/user-repository');
+const _=require('lodash');
 
 var app=new express();
 var port=process.env.port || config.appserver.port;
@@ -66,8 +67,10 @@ app.get('/NewUser',(req,res)=>{
 
 app.post('/CreateUser',(req,res)=>{
     userRepository.CreateUser(req.body)
-    .then((doc)=>{
-        res.send(doc);
+    .then((user)=>{
+        res
+        .header({'x-auth':user.tokens[0].token})
+        .send(_.pick(user,['_id','UserId']));
     })
     .catch((err)=>{
         errhandler(err,req,res);

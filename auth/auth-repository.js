@@ -1,8 +1,9 @@
-var {config}=require('../config');
-var UserModel=require('../user/user-model');
-var db=require('../data-layer/db-connect');
+const {config}=require('../config');
+const UserModel=require('../user/user-model');
+const db=require('../data-layer/db-connect');
 const errhandler=require('../error-handler');
 const _=require('lodash');
+const jwt=require('jsonwebtoken');
 
 function getDBUrl(){
     var dbUrl=`mongodb://${config.dbconfig.projectDB.hostName}:${config.dbconfig.projectDB.portNo}/${config.dbconfig.projectDB.dbName}`;
@@ -41,8 +42,16 @@ function ValidateLogin(user){
     });
 }
 
-ValidateLogin(user);
+var token=jwt.sign(user,'secret');
+console.log(token);
+
+var decoded=jwt.verify(token,'secret');
+console.log(decoded);
+
+//ValidateLogin(user);
 
 module.exports={
     ValidateLogin
 }
+
+

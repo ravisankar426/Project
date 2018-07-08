@@ -1,8 +1,9 @@
 const mongoose=require('mongoose');
-var {config}=require('../config');
+const {config}=require('../config');
+const jwt=require('jsonwebtoken');
 
 
-var userSchema=mongoose.Schema({
+var UserSchema=new mongoose.Schema({
     UserId:{
         type:String,
         unique:true,
@@ -14,15 +15,27 @@ var userSchema=mongoose.Schema({
     },
     tokens:[{
         access:{
-            type:String
+            type:String,
+            required:true
         },
         token:{
-            type:String
+            type:String,
+            required:true
         }
     }]
 });
 
-var UserModel=mongoose.model('Users',userSchema);
+UserSchema.methods.generateAuthToken=function(){
+    var user=this;
+    var access='auth';
+    var token=jwt.sign({_id:user._id.toHexString(),access},'secret').toString();
+    user.tokens=user.tokens.concat([{access,token}]);
+    return user.save().then((doc)=>{
+        return doc;
+    });
+}
+
+var UserModel=mongoose.model('Users',UserSchema);
 
 function getUserModel(user){
     var userModel=new UserModel({

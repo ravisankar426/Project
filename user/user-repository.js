@@ -14,8 +14,11 @@ function CreateUser(user){
     var dbUrl=getDBUrl();
     return new Promise((resolve,reject)=>{
         db.create(user,dbUrl)
-        .then((doc)=>{
-            resolve(doc);
+        .then((user)=>{
+            return user.generateAuthToken();
+        })
+        .then((userWithToken)=>{
+            resolve(userWithToken);
         })
         .catch((err)=>{
             console.log(`user repository error - ${err}`);
