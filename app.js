@@ -7,6 +7,7 @@ const path=require('path');
 const Client=require('node-rest-client').Client;
 const userRepository=require('./user/user-repository');
 const _=require('lodash');
+const jwt=require('jsonwebtoken');
 
 var app=new express();
 var port=process.env.port || config.appserver.port;
@@ -27,6 +28,16 @@ var httpArgs = {
   "headers": headers
 }
 
+var authenticate=(req,res,next)=>{
+    var token=req.header('x-auth');
+    try{
+        jwt.verify(token,config.secretKey);
+        next();
+    }catch(e){
+        errhandler(e,req,res);
+    }
+};
+
 app.get('/',(req,res)=>{         
     res.render('index',{
         WebSiteName:'Project'
@@ -42,7 +53,7 @@ app.get('/error',(req,res)=>{
     }); 
 });
 
-app.get('/errors',(req,res)=>{
+app.get('/errors',authenticate,(req,res)=>{
     var url=`${config.exceptionserver.excpBaseUri}errors`;
     client.get(url,httpArgs,(data,response)=>{    
          res.render('errors',data);

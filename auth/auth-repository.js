@@ -4,6 +4,7 @@ const db=require('../data-layer/db-connect');
 const errhandler=require('../error-handler');
 const _=require('lodash');
 const jwt=require('jsonwebtoken');
+const crypto=require('crypto');
 
 function getDBUrl(){
     var dbUrl=`mongodb://${config.dbconfig.projectDB.hostName}:${config.dbconfig.projectDB.portNo}/${config.dbconfig.projectDB.dbName}`;
@@ -16,39 +17,43 @@ var user={
 };
 
 function ValidateLogin(user){
-    var filterParams={UserId:user.UserId,Password:user.Password};
+    var filterParams={UserId:user.UserId};
     var userModel=UserModel.UserModel;
     var dbUrl=getDBUrl();
     return new Promise((resolve,reject)=>{
         db.get(userModel,dbUrl,filterParams)
-        .then((doc)=>{
-            resolve(doc);
-            return doc;
-        },
-        (err)=>{
-            reject(err);
-            return err;
-        })
-        .then((doc)=>{
-            var validUser=JSON.parse(doc)[0];
-            if(validUser){
-                var validUser=_.pick(validUser,['UserId','Password']);
-                console.log(validUser);
+        .then((doc)=>{            
+            if(isPasswordCorrect(user.Password,doc)){
+                var access='auth';
+                doc=JSON.parse(doc)[0]; 
+                doc=UserModel.getUserModel(doc);
+                var token=jwt.sign({_id:doc._id.toHexString(),access},config.secretKey).toString();
+                doc.tokens=doc.tokens.concat([{access,token}]);  
+                return doc;
             }
-        },
-        (err)=>{
-            console.log(error);
+        })
+        .then((userWithToken)=>{
+            return resolve(userWithToken);
+        })
+        .catch((e)=>{
+            reject(e);
         });
     });
 }
 
-var token=jwt.sign(user,'secret');
-console.log(token);
+var isPasswordCorrect=function(givenPassword,user) { 
+    user=JSON.parse(user)[0];
+    
+    let testPbkdf2 = crypto.pbkdf2Sync(
+        givenPassword,
+        user.PasswordSalt,
+        config.crypto.rounds,
+        config.crypto.keyLength,
+        config.crypto.hashAlg
+    ).toString('hex');
 
-var decoded=jwt.verify(token,'secret');
-console.log(decoded);
-
-//ValidateLogin(user);
+    return testPbkdf2 === user.Password
+}
 
 module.exports={
     ValidateLogin

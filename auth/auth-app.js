@@ -1,7 +1,9 @@
 const express=require('express');
 const bodyParser=require('body-parser');
 const config=require('../config').config;
-
+const authRepository=require('./auth-repository');
+const errhandler=require('../error-handler').handleException;
+const _=require('lodash');
 
 var app=new express();
 var port=process.env.port || config.authServer.port;
@@ -14,7 +16,16 @@ app.use(function(req, res, next) {
   });
 
 app.post('/SignIn',(req,res)=>{
-    res.send(JSON.stringify(req.body));
+    authRepository.ValidateLogin(req.body)
+    .then((user)=>{
+        res
+        .status(200)
+        .header({'x-auth':user.tokens[0].token})
+        .send();
+    })
+    .catch((err)=>{
+        errhandler(err,req,res);
+    });   
 });
 
 

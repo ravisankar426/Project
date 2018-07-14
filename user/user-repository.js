@@ -12,19 +12,18 @@ function CreateUser(user){
     var result;
     var user=UserModel.getUserModel(user);
     var dbUrl=getDBUrl();
-    return new Promise((resolve,reject)=>{
-        db.create(user,dbUrl)
+    //return new Promise((resolve,reject)=>{
+        return db.create(user,dbUrl)
         .then((user)=>{
             return user.generateAuthToken();
         })
         .then((userWithToken)=>{
-            resolve(userWithToken);
+            return userWithToken;
         })
         .catch((err)=>{
-            console.log(`user repository error - ${err}`);
-            reject(err);
-        })
-    });   
+            return err;
+        });
+    //});   
 }
 
 function GetUsers(fiterParams){

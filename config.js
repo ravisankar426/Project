@@ -30,6 +30,12 @@ var config={
             portNo:dbPortNo,
             dbName:'ProjectDB'
         }
+    },
+    secretKey:'zaqwsxcderfvbgt',
+    crypto:{
+        keyLength: 512,
+        hashAlg: 'sha512',
+        rounds: 10000,
     }
 }
 
