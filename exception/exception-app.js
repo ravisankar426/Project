@@ -9,6 +9,18 @@ var app=new express();
 app.use(bodyparser.json());
 var port=process.env.port || config.exceptionserver.port;
 
+var authenticate=(req,res,next)=>{
+    var token=req.header('x-auth');
+    try{
+        jwt.verify(token,config.secretKey);
+        next();
+    }catch(e){
+        errhandler(e,req,res);
+    }
+};
+
+//app.use(authenticate);
+
 app.get('/',(req,res)=>{
     res.send('Welcome to exceptions');
 });

@@ -38,6 +38,8 @@ var authenticate=(req,res,next)=>{
     }
 };
 
+app.use(authenticate);
+
 app.get('/',(req,res)=>{         
     res.render('index',{
         WebSiteName:'Project'
@@ -53,7 +55,7 @@ app.get('/error',(req,res)=>{
     }); 
 });
 
-app.get('/errors',authenticate,(req,res)=>{
+app.get('/errors',(req,res)=>{
     var url=`${config.exceptionserver.excpBaseUri}errors`;
     client.get(url,httpArgs,(data,response)=>{    
          res.render('errors',data);
