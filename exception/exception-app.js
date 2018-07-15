@@ -9,6 +9,12 @@ var app=new express();
 app.use(bodyparser.json());
 var port=process.env.port || config.exceptionserver.port;
 
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
+  
 var authenticate=(req,res,next)=>{
     var token=req.header('x-auth');
     try{
