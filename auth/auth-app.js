@@ -18,7 +18,7 @@ app.use(function(req, res, next) {
 
 app.post('/SignIn',(req,res)=>{
     authRepository.ValidateLogin(req.body)
-    .then((user)=>{        
+    .then((user)=>{       
         if(!user){
             res
             .status(200)

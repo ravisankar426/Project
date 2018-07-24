@@ -11,8 +11,10 @@ function handleException(e,req,res){
 }
 
 function sendCustomExceptionResponse(e,res){    
-    var response=getCustomExceptionResponse('',e,res);    
-    res.json(response);
+    var response=getCustomExceptionResponse('',e,res); 
+    res
+    .header({'x-auth':null})
+    .json(response);
 }
 
 function logException(e){
@@ -32,7 +34,8 @@ function getCustomExceptionResponse(message,err,res){
     var response={
         errorMessage:message,
         httpStatusCode:500,
-        httpStatusMessage:'Internal Server Error'
+        httpStatusMessage:'Internal Server Error',
+        Token:null
     }
     return response;    
 }

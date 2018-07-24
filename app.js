@@ -83,8 +83,9 @@ app.post('/CreateUser',(req,res)=>{
     userRepository.CreateUser(req.body)
     .then((user)=>{
         res
-        .header({'x-auth':user.tokens[0].token})
-        .send(_.pick(user,['_id','UserId']));
+        .status(200)
+        .header({'x-auth':user.tokens[0].token})        
+        .send({UserId:user.UserId,Password:user.Password,Token:user.tokens[0].token});
     })
     .catch((err)=>{
         errhandler(err,req,res);
