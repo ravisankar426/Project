@@ -25,7 +25,6 @@ function ValidateLogin(user){
         .then((doc)=>{  
             var isValid=isPasswordCorrect(user.Password,doc);  
             if(isValid){
-                console.log('valid login');
                 var access='auth';
                 doc=JSON.parse(doc)[0]; 
                 doc=UserModel.getUserModel(doc);
