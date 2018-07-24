@@ -22,14 +22,19 @@ function ValidateLogin(user){
     var dbUrl=getDBUrl();
     return new Promise((resolve,reject)=>{
         db.get(userModel,dbUrl,filterParams)
-        .then((doc)=>{            
-            if(isPasswordCorrect(user.Password,doc)){
+        .then((doc)=>{  
+            var isValid=isPasswordCorrect(user.Password,doc);  
+            if(isValid){
+                console.log('valid login');
                 var access='auth';
                 doc=JSON.parse(doc)[0]; 
                 doc=UserModel.getUserModel(doc);
                 var token=jwt.sign({_id:doc._id.toHexString(),access},config.secretKey).toString();
                 doc.tokens=doc.tokens.concat([{access,token}]);  
                 return doc;
+            }
+            else{
+                return null;
             }
         })
         .then((userWithToken)=>{
@@ -44,6 +49,9 @@ function ValidateLogin(user){
 var isPasswordCorrect=function(givenPassword,user) { 
     user=JSON.parse(user)[0];
     
+    if(!user)
+        return false;
+
     let testPbkdf2 = crypto.pbkdf2Sync(
         givenPassword,
         user.PasswordSalt,

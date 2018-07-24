@@ -16,7 +16,8 @@ app.use(express.static(path.join(__dirname,'views')));
 app.use(bodyParser.json());
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept,x-auth");
+    res.header("Access-Control-Allow-Methods", "PUT,GET,POST,DELETE,PATCH");
     next();
   });
 
@@ -38,7 +39,7 @@ var authenticate=(req,res,next)=>{
     }
 };
 
-app.use(authenticate);
+//app.use(authenticate);
 
 app.get('/',(req,res)=>{         
     res.render('index',{
