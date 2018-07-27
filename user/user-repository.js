@@ -14,8 +14,7 @@ function CreateUser(user){
     var dbUrl=getDBUrl();
     //return new Promise((resolve,reject)=>{
         return db.create(user,dbUrl)
-        .then((user)=>{       
-            console.log(user);     
+        .then((user)=>{   
             return user.generateAuthToken();
         })
         .then((userWithToken)=>{

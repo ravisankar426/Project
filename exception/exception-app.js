@@ -2,6 +2,7 @@ const express=require('express');
 const bodyparser=require('body-parser');
 var config=require('../config').config;
 var logger=require('./exception-repository');
+var jwt=require('jsonwebtoken');
 
 
 
@@ -22,20 +23,20 @@ var authenticate=(req,res,next)=>{
         jwt.verify(token,config.secretKey);
         next();
     }catch(e){
-        errhandler(e,req,res);
+        logger.writeToDB(e);
     }
 };
 
 //app.use(authenticate);
 
-app.get('/',(req,res)=>{
+app.get('/',authenticate,(req,res)=>{
     res.send('Welcome to exceptions');
 });
 
-app.get('/errors',(req,res)=>{
+app.get('/errors',authenticate,(req,res)=>{
     logger.getExceptions()
     .then((data)=>{
-        var result={errors:JSON.parse(data)}
+        var result=JSON.parse(data);
         res.send(result);
     })
     .catch((e)=>{
