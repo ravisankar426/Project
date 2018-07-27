@@ -75,6 +75,18 @@ app.get('/users',(req,res)=>{
     });
 });
 
+app.get('/userList',(req,res)=>{
+    var filterParams={};
+    userRepository.GetUsers(filterParams)
+    .then((doc)=>{
+        var result={users:JSON.parse(doc)};
+        res.status(200).send(result);
+    })
+    .catch((err)=>{
+        errhandler(err,req,res);
+    });
+});
+
 app.get('/NewUser',(req,res)=>{
     res.render('NewUser');
 });
